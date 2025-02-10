@@ -20,7 +20,7 @@ endif()
 string(REPLACE ";" "," FMHA_FWD_APIS "${FMHA_FWD_ENABLE_APIS}")
 # generate a list of kernels, but not actually emit files at config sta
 execute_process(
-  COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/generate.py
+  COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/generate.py --receipt 4
   --api ${FMHA_FWD_APIS} --list_blobs ${CMAKE_CURRENT_BINARY_DIR}/fwd_blob_list.txt
   RESULT_VARIABLE ret
 )
@@ -30,7 +30,7 @@ endif()
 
 execute_process(
   COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/generate.py
-  --api bwd --list_blobs ${CMAKE_CURRENT_BINARY_DIR}/bwd_blob_list.txt --receipt 3
+  --api bwd --list_blobs ${CMAKE_CURRENT_BINARY_DIR}/bwd_blob_list.txt --receipt 4
   RESULT_VARIABLE ret
 )
 if(ret AND NOT ret EQUAL 0)
@@ -44,14 +44,14 @@ file(STRINGS ${CMAKE_CURRENT_BINARY_DIR}/bwd_blob_list.txt FMHA_BWD_GEN_BLOBS)
 
 add_custom_command(
   OUTPUT ${FMHA_FWD_GEN_BLOBS}
-  COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/generate.py
+  COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/generate.py --receipt 4
   --api ${FMHA_FWD_APIS} --output_dir ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 add_custom_command(
   OUTPUT ${FMHA_BWD_GEN_BLOBS}
   COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/generate.py
-  --api bwd --output_dir ${CMAKE_CURRENT_BINARY_DIR} --receipt 3
+  --api bwd --output_dir ${CMAKE_CURRENT_BINARY_DIR} --receipt 4
 )
 
 set(EXAMPLE_FMHA_FWD "tile_example_fmha_fwd")
